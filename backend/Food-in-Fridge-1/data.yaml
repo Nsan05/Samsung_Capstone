@@ -1,0 +1,98 @@
+names:
+- Banana
+- Beetroot
+- Broccoli
+- Cauliflower
+- Lemon
+- Onion
+- Orange
+- Peas
+- Potato
+- Shallot
+- Strawberry
+- Sweetcorn
+- Tomato
+- apple
+- apples
+- asparagus
+- aubergine
+- bacon
+- banana
+- bananas
+- bazlama
+- beef
+- blueberries
+- bread
+- broccoli
+- butter
+- carrot
+- carrots
+- cheese
+- chicken
+- chicken_breast
+- chocolate
+- chocolate chips
+- corn
+- courgettes
+- cream
+- cream cheese
+- dates
+- eggs
+- flour
+- ginger
+- goat_cheese
+- green beans
+- green bell pepper
+- green chilies
+- green_beans
+- ground_beef
+- ham
+- heavy_cream
+- juice
+- lemon
+- lemons
+- lettuce
+- lime
+- mango
+- meat
+- milk
+- mineral water
+- mushroom
+- mushrooms
+- olive
+- olives
+- onion
+- orange
+- parsley
+- peach
+- peppers
+- potato
+- potatoes
+- red bell pepper
+- red grapes
+- red onion
+- salami
+- sauce
+- sausage
+- shrimp
+- spinach
+- spring onion
+- strawberries
+- strawberry
+- sugar
+- sweet_potato
+- tomato
+- tomato paste
+- tomatoes
+- yellow bell pepper
+- yoghurt
+nc: 87
+roboflow:
+  license: CC BY 4.0
+  project: food-in-fridge-2slx4-asarp
+  url: https://universe.roboflow.com/samsung-capstone/food-in-fridge-2slx4-asarp/dataset/1
+  version: 1
+  workspace: samsung-capstone
+test: ../test/images
+train: ../train/images
+val: ../valid/images
