@@ -75,14 +75,18 @@ class YoloService:
         Clean up labels for the API:
         - Lowercase
         - Remove underscores
+        - Remove dash suffixes (e.g., "Ash Gourd -Kubhindo-" -> "ash gourd")
         - Remove duplicates
-        - Handle singular/plural (simple heuristic or rely on API fuzzy match)
         """
+        import re
         cleaned = set()
         for label in labels:
             # normalization
             l = label.lower().strip()
             l = l.replace("_", " ")
+            # Remove content after hyphen if it looks like a local name suffix
+            # e.g. "ash gourd -kubhindo-"
+            l = re.sub(r'\s*-.*$', '', l)
             cleaned.add(l)
         return list(cleaned)
 
@@ -139,6 +143,7 @@ class SpoonacularService:
                     # We keep the used/missed counts from the first call as bulk might not have them relative to my query
                     r['sourceUrl'] = d.get('sourceUrl')
                     r['readyInMinutes'] = d.get('readyInMinutes')
+                    r['summary'] = d.get('summary')
                     final_recipes.append(r)
             
             return final_recipes

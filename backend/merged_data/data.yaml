@@ -1,0 +1,205 @@
+path: c:\Users\nithi\Desktop\Courses, Certifications & Internships\Samsung Innovation
+  Campus\Capstone\backend\merged_data
+train: train/images
+val: valid/images
+test: test/images
+nc: 198
+names:
+- Banana
+- Beetroot
+- Broccoli
+- Cauliflower
+- Lemon
+- Onion
+- Orange
+- Peas
+- Potato
+- Shallot
+- Strawberry
+- Sweetcorn
+- Tomato
+- apple
+- apples
+- asparagus
+- aubergine
+- bacon
+- banana
+- bananas
+- bazlama
+- beef
+- blueberries
+- bread
+- broccoli
+- butter
+- carrot
+- carrots
+- cheese
+- chicken
+- chicken_breast
+- chocolate
+- chocolate chips
+- corn
+- courgettes
+- cream
+- cream cheese
+- dates
+- eggs
+- flour
+- ginger
+- goat_cheese
+- green beans
+- green bell pepper
+- green chilies
+- green_beans
+- ground_beef
+- ham
+- heavy_cream
+- juice
+- lemon
+- lemons
+- lettuce
+- lime
+- mango
+- meat
+- milk
+- mineral water
+- mushroom
+- mushrooms
+- olive
+- olives
+- onion
+- orange
+- parsley
+- peach
+- peppers
+- potato
+- potatoes
+- red bell pepper
+- red grapes
+- red onion
+- salami
+- sauce
+- sausage
+- shrimp
+- spinach
+- spring onion
+- strawberries
+- strawberry
+- sugar
+- sweet_potato
+- tomato
+- tomato paste
+- tomatoes
+- yellow bell pepper
+- yoghurt
+- Akabare Khursani
+- Apple
+- Artichoke
+- Ash Gourd -Kubhindo-
+- Asparagus -Kurilo-
+- Avocado
+- Bacon
+- Bamboo Shoots -Tama-
+- Beans
+- Beaten Rice -Chiura-
+- Beef
+- Bethu ko Saag
+- Bitter Gourd
+- Black Lentils
+- Black beans
+- Bottle Gourd -Lauka-
+- Bread
+- Brinjal
+- Broad Beans -Bakullo-
+- Buff Meat
+- Butter
+- Cabbage
+- Capsicum
+- Carrot
+- Cassava -Ghar Tarul-
+- Chayote-iskus-
+- Cheese
+- Chicken
+- Chicken Gizzards
+- Chickpeas
+- Chili Pepper -Khursani-
+- Chili Powder
+- Chowmein Noodles
+- Cinnamon
+- Coriander -Dhaniya-
+- Corn
+- Cornflakes
+- Crab Meat
+- Cucumber
+- Egg
+- Farsi ko Munta
+- Fiddlehead Ferns -Niguro-
+- Fish
+- Garden Peas
+- Garden cress-Chamsur ko saag-
+- Garlic
+- Ginger
+- Green Brinjal
+- Green Lentils
+- Green Mint -Pudina-
+- Green Peas
+- Green Soyabean -Hariyo Bhatmas-
+- Gundruk
+- Ham
+- Ice
+- Jack Fruit
+- Ketchup
+- Lapsi -Nepali Hog Plum-
+- Lemon -Nimbu-
+- Lime -Kagati-
+- Long Beans -Bodi-
+- Masyaura
+- Milk
+- Minced Meat
+- Moringa Leaves -Sajyun ko Munta-
+- Mushroom
+- Mutton
+- Nutrela -Soya Chunks-
+- Okra -Bhindi-
+- Olive Oil
+- Onion Leaves
+- Palak -Indian Spinach-
+- Palungo -Nepali Spinach-
+- Paneer
+- Papaya
+- Pea
+- Pear
+- Pointed Gourd -Chuche Karela-
+- Pork
+- Pumpkin -Farsi-
+- Radish
+- Rahar ko Daal
+- Rayo ko Saag
+- Red Beans
+- Red Lentils
+- Rice -Chamal-
+- Sajjyun -Moringa Drumsticks-
+- Salt
+- Sausage
+- Snake Gourd -Chichindo-
+- Soy Sauce
+- Soyabean -Bhatmas-
+- Sponge Gourd -Ghiraula-
+- Stinging Nettle -Sisnu-
+- Sugar
+- Sweet Potato -Suthuni-
+- Taro Leaves -Karkalo-
+- Taro Root-Pidalu-
+- Thukpa Noodles
+- Tofu
+- Tori ko Saag
+- Tree Tomato -Rukh Tamatar-
+- Turnip
+- Wallnut
+- Water Melon
+- Wheat
+- Yellow Lentils
+- kimchi
+- mayonnaise
+- noodle
+- seaweed
