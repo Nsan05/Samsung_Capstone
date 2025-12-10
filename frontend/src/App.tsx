@@ -36,8 +36,11 @@ function App() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+<<<<<<< HEAD
   const [isDragActive, setIsDragActive] = useState(false);
   const [isDragActivePreview, setIsDragActivePreview] = useState(false);
+=======
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
   
   // Dark mode state 
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -54,6 +57,7 @@ function App() {
   
   // For overlay scaling
   const imgRef = useRef<HTMLImageElement>(null);
+<<<<<<< HEAD
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const processFile = (file: File) => {
@@ -131,6 +135,15 @@ function App() {
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       processFile(e.dataTransfer.files[0]);
+=======
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file));
+      setAnalysisResult(null);
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
     }
   };
 
@@ -182,7 +195,11 @@ function App() {
 
             <button 
                 onClick={toggleDarkMode}
+<<<<<<< HEAD
                 className={`p-2 px-4 rounded-full transition-all duration-500 transform active:scale-95 shadow-sm flex items-center gap-2 text-sm font-medium ${isDarkMode ? 'bg-[#252525] text-yellow-400' : 'bg-white text-slate-600'}`}
+=======
+                className={`p-2 px-4 rounded-full transition-all duration-300 transform active:scale-95 shadow-sm flex items-center gap-2 text-sm font-medium ${isDarkMode ? 'bg-[#252525] text-yellow-400' : 'bg-white text-slate-600'}`}
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
             >
                     {isDarkMode ? <Sparkles className="w-4 h-4" /> : <Clock className="w-4 h-4 rotate-180" />}
                     <span>{isDarkMode ? 'Dark' : 'Light'}</span>
@@ -198,11 +215,16 @@ function App() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ type: "spring", stiffness: 100, damping: 20 }}
+<<<<<<< HEAD
             className={`p-1 rounded-[2.5rem] overflow-hidden transition-all duration-500 ${isDarkMode ? 'bg-[#1e1e1e]' : 'bg-white shadow-lg hover:shadow-xl'}`}
+=======
+            className={`p-1 rounded-[2.5rem] overflow-hidden ${isDarkMode ? 'bg-[#1e1e1e]' : 'bg-white shadow-sm'}`}
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
           >
              {/* Content Container */}
              <div className="p-6 flex flex-col items-center">
                  {!previewUrl ? (
+<<<<<<< HEAD
                     <label 
                       onDragEnter={handleDrag}
                       onDragLeave={handleDrag}
@@ -248,6 +270,20 @@ function App() {
                         transform: isDragActivePreview ? 'scale(1.02)' : 'scale(1)',
                       }}
                     >
+=======
+                    <label className={`w-full aspect-[4/5] rounded-[2rem] border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-colors ${
+                        isDarkMode ? 'border-gray-700 hover:border-[#0381fe] bg-[#252525]' : 'border-gray-200 hover:border-[#0381fe] bg-gray-50'
+                    }`}>
+                        <div className={`p-6 rounded-3xl mb-4 ${isDarkMode ? 'bg-[#0381fe]/20 text-[#0381fe]' : 'bg-blue-50 text-[#0381fe]'}`}>
+                            <Upload className="w-8 h-8" />
+                        </div>
+                        <span className="text-lg font-medium mb-1">Upload Photo</span>
+                        <span className="text-sm text-gray-400">Tap to select from storage</span>
+                        <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+                    </label>
+                 ) : (
+                    <div className="relative w-full rounded-[2rem] overflow-hidden shadow-sm">
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                         <img 
                             src={previewUrl} 
                             ref={imgRef}
@@ -255,6 +291,7 @@ function App() {
                             onLoad={handleImageLoad}
                             className="w-full h-auto object-cover"
                         />
+<<<<<<< HEAD
                         {/* Drag Overlay - Show when dragging */}
                         {isDragActivePreview && (
                           <div className="absolute inset-0 bg-[#0381fe]/20 backdrop-blur-sm flex items-center justify-center z-20">
@@ -264,6 +301,8 @@ function App() {
                             </div>
                           </div>
                         )}
+=======
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                         {/* Overlay Bounding Boxes */}
                          {analysisResult && analysisResult.raw_detections.map((det, idx) => {
                             const natW = imgRef.current?.naturalWidth || 1;
@@ -288,6 +327,7 @@ function App() {
                                 </motion.div>
                             );
                          })}
+<<<<<<< HEAD
                     </div>
 
                     {/* Change Image Button - Below Image */}
@@ -296,6 +336,15 @@ function App() {
                         <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
                     </label>
                     </>
+=======
+
+                         {/* Change Image Button */}
+                         <label className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-medium cursor-pointer active:scale-95 transition-transform">
+                             Change
+                             <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+                         </label>
+                    </div>
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                  )}
 
                 {/* Detected Items List - Moved Inside Card */}
@@ -334,6 +383,7 @@ function App() {
                  <button 
                   onClick={handleUpload} 
                   disabled={!selectedImage || loading}
+<<<<<<< HEAD
                   type="button"
                   className={`mt-6 w-full py-6 px-6 rounded-[2rem] text-lg font-bold shadow-lg transition-all duration-500 flex items-center justify-center gap-3 outline-none focus:outline-none ${
                     !selectedImage || loading 
@@ -350,6 +400,20 @@ function App() {
                     <>
                        <Sparkles className="w-5 h-5 fill-current flex-shrink-0" />
                        <span>Find Recipes</span>
+=======
+                  className={`mt-6 w-full py-5 rounded-[2rem] text-lg font-bold shadow-lg active:scale-[0.98] transition-all flex items-center justify-center gap-3 ${
+                    !selectedImage || loading 
+                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed dark:bg-gray-700 dark:text-gray-500' 
+                    : 'bg-[#0381fe] text-white hover:bg-[#026bd6] shadow-blue-500/20'
+                  }`}
+                >
+                  {loading ? (
+                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                       <Sparkles className="w-5 h-5 fill-current" />
+                       Find Recipes
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                     </>
                   )}
                 </button>
@@ -376,7 +440,11 @@ function App() {
            {loading && (
              <div className="space-y-4">
                {[1, 2, 3].map(i => (
+<<<<<<< HEAD
                   <div key={i} className={`h-40 w-full rounded-[2rem] animate-pulse ${isDarkMode ? 'bg-[#1e1e1e]' : 'bg-white shadow-lg'}`}></div>
+=======
+                  <div key={i} className={`h-40 w-full rounded-[2rem] animate-pulse ${isDarkMode ? 'bg-[#1e1e1e]' : 'bg-white'}`}></div>
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                ))}
              </div>
            )}
@@ -389,10 +457,17 @@ function App() {
                  animate={{ opacity: 1, y: 0 }}
                  transition={{ delay: 0.1 * idx }}
                  onClick={() => setSelectedRecipe(recipe)}
+<<<<<<< HEAD
                  className={`relative p-4 flex gap-5 rounded-[2rem] transition-all duration-500 cursor-pointer active:scale-95 ${
                     isDarkMode 
                     ? 'bg-[#1e1e1e] active:bg-[#252525]' 
                     : 'bg-white shadow-lg hover:shadow-2xl active:bg-gray-50'
+=======
+                 className={`relative p-4 flex gap-5 rounded-[2rem] transition-all cursor-pointer active:scale-95 ${
+                    isDarkMode 
+                    ? 'bg-[#1e1e1e] active:bg-[#252525]' 
+                    : 'bg-white shadow-sm hover:shadow-md active:bg-gray-50'
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                  }`}
                >
                   <div className="w-32 h-32 rounded-[1.5rem] overflow-hidden flex-shrink-0 bg-gray-200">
@@ -458,7 +533,11 @@ function App() {
                                 
                                 <button 
                                     onClick={() => setSelectedRecipe(null)}
+<<<<<<< HEAD
                                     className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-md transition-colors duration-500"
+=======
+                                    className="absolute top-4 right-4 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-md transition-colors"
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                                 >
                                     <X className="w-6 h-6" />
                                 </button>
@@ -511,7 +590,11 @@ function App() {
                                         href={selectedRecipe.sourceUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
+<<<<<<< HEAD
                                         className="w-full block py-4 bg-[#0381fe] text-white text-center font-bold text-lg rounded-[2rem] shadow-lg shadow-blue-500/30 active:scale-[0.98] transition-all duration-500"
+=======
+                                        className="w-full block py-4 bg-[#0381fe] text-white text-center font-bold text-lg rounded-[2rem] shadow-lg shadow-blue-500/30 active:scale-[0.98] transition-all"
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                                     >
                                         View Full Instructions
                                     </a>

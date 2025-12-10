@@ -111,6 +111,7 @@ class SpoonacularService:
         }
         
         try:
+<<<<<<< HEAD
             print(f"Fetching recipes for ingredients: {ingredients_str}")
             response = requests.get(endpoint, params=params, timeout=10)
             print(f"API Response Status: {response.status_code}")
@@ -132,6 +133,13 @@ class SpoonacularService:
             
             if not initial_recipes:
                 print("No recipes found for the detected ingredients")
+=======
+            response = requests.get(endpoint, params=params)
+            response.raise_for_status()
+            initial_recipes = response.json()
+            
+            if not initial_recipes:
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
                 return []
                 
             # Fetch details for URLs
@@ -144,6 +152,7 @@ class SpoonacularService:
                 "ids": ids_str
             }
             
+<<<<<<< HEAD
             print(f"Fetching detailed information for {len(recipe_ids)} recipes")
             bulk_response = requests.get(bulk_endpoint, params=bulk_params, timeout=10)
             print(f"Bulk API Response Status: {bulk_response.status_code}")
@@ -153,6 +162,9 @@ class SpoonacularService:
                 # Return initial recipes without detailed info
                 return initial_recipes[:number]
             
+=======
+            bulk_response = requests.get(bulk_endpoint, params=bulk_params)
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
             bulk_response.raise_for_status()
             details = bulk_response.json()
             
@@ -169,6 +181,7 @@ class SpoonacularService:
                     r['readyInMinutes'] = d.get('readyInMinutes')
                     r['summary'] = d.get('summary')
                     final_recipes.append(r)
+<<<<<<< HEAD
                 else:
                     # If no details, still include the recipe with basic info
                     final_recipes.append(r)
@@ -185,3 +198,11 @@ class SpoonacularService:
         except Exception as e:
             print(f"Unexpected error in find_recipes_by_ingredients: {e}")
             return []
+=======
+            
+            return final_recipes
+
+        except requests.RequestException as e:
+            print(f"Error calling Spoonacular API: {e}")
+            return []
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0

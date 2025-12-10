@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+from roboflow import Roboflow
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
 from ultralytics import YOLO
 from dotenv import load_dotenv
 import os
@@ -125,6 +129,7 @@ def merge_datasets(dataset_paths, output_dir="merged_dataset"):
     return str(output_path / "data.yaml")
 
 def train_model():
+<<<<<<< HEAD
     """Train YOLO model on local Food-in-Fridge dataset."""
     print("\n" + "=" * 60)
     print("🎯 YOLO TRAINING - LOCAL DATASET")
@@ -168,6 +173,34 @@ def train_model():
     print(f"🏆 Best model: {results.save_dir}/weights/best.pt")
     print("=" * 60)
     print("\n✨ The app will automatically load this trained model on next restart!")
+=======
+    api_key = os.getenv("ROBOFLOW_API_KEY")
+    if not api_key:
+        raise ValueError("ROBOFLOW_API_KEY not found in .env file")
+        
+    rf = Roboflow(api_key=api_key)
+    
+    print("Downloading Dataset 1 (Food in Fridge)...")
+    p1 = rf.workspace("samsung-capstone").project("food-in-fridge-2slx4-asarp")
+    d1 = p1.version(1).download("yolov8")
+    
+    print("Downloading Dataset 2 (Food Ingredients)...")
+    p2 = rf.workspace("samsung-capstone").project("food-ingredients-detection-6ce7j-arpob")
+    d2 = p2.version(1).download("yolov8")
+
+    print("Merging datasets...")
+    data_yaml_path = merge_datasets([d1, d2], output_dir="merged_data")
+
+    print("Starting YOLOv8 training on merged dataset...")
+    # Load a model
+    model = YOLO("yolov8n.pt") 
+
+    # Train
+    results = model.train(data=data_yaml_path, epochs=20, imgsz=640)
+    
+    print("Training complete.")
+    print(f"Best model weights should be saved in: {results.save_dir}/weights/best.pt")
+>>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
 
 if __name__ == "__main__":
     train_model()
