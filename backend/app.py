@@ -4,14 +4,28 @@ from fastapi.staticfiles import StaticFiles
 import shutil
 import os
 import uuid
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load environment variables from .env file BEFORE importing services
+env_path = Path(__file__).parent / ".env"
+load_dotenv(env_path)
+
 from services import YoloService, SpoonacularService
 
 app = FastAPI(title="VisionChef API")
 
+
+import os
+
+print("🔍 Spoonacular Key:", os.getenv("SPOONACULAR_API_KEY"))
+print("🔍 Roboflow Key:", os.getenv("ROBOFLOW_API_KEY"))
+
+
 # Allow CORS for local frontend execution
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # For development convenience
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,9 +42,19 @@ os.makedirs("temp_uploads", exist_ok=True)
 def read_root():
     return {"message": "VisionChef API is running"}
 
+@app.get("/health")
+def health_check():
+    """Health check endpoint - also shows API key status"""
+    spoon_key = os.getenv("SPOONACULAR_API_KEY")
+    roboflow_key = os.getenv("ROBOFLOW_API_KEY")
+    return {
+        "status": "healthy",
+        "spoonacular_key_loaded": bool(spoon_key),
+        "roboflow_key_loaded": bool(roboflow_key),
+    }
+
 @app.post("/analyze_fridge")
 async def analyze_fridge(file: UploadFile = File(...)):
-    # 1. Save uploaded file
     file_extension = file.filename.split(".")[-1]
     filename = f"{uuid.uuid4()}.{file_extension}"
     file_path = f"temp_uploads/{filename}"
@@ -39,31 +63,31 @@ async def analyze_fridge(file: UploadFile = File(...)):
         shutil.copyfileobj(file.file, buffer)
         
     try:
-        # 2. Detect Ingredients
+        # Detect Ingredients
         detection_result = yolo_service.detect(file_path)
         detected_ingredients = detection_result["ingredients"]
-        detections = detection_result["detections"] # Metadata with bboxes
+        detections = detection_result["detections"]
         
-        # 3. Fetch Recipes
+        # Fetch Recipes
         recipes = []
         if detected_ingredients:
-            recipes = spoonacular_service.find_recipes_by_ingredients(detected_ingredients)
+            try:
+                recipes = spoonacular_service.find_recipes_by_ingredients(detected_ingredients)
+            except Exception as recipe_error:
+                print(f"Recipe fetching failed: {recipe_error}")
+                recipes = []
             
         return {
             "detected_ingredients": detected_ingredients,
-            "raw_detections": detections, # Frontend can use this to draw boxes
+            "raw_detections": detections,
             "recipes": recipes,
             "image_id": filename
         }
+        
     except Exception as e:
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=str(e))
-    finally:
-        # Optional: Clean up file after processing, 
-        # but might want to keep it if we serve it back. 
-        # For now, let's keep it to verify.
-        pass
 
 # Simple way to serve the uploaded images if needed (though client has the original)
 # app.mount("/files", StaticFiles(directory="temp_uploads"), name="files")

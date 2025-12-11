@@ -36,6 +36,8 @@ function App() {
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
+  const [isDragActive, setIsDragActive] = useState(false);
+  const [isDragActivePreview, setIsDragActivePreview] = useState(false);
   
   // Dark mode state 
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -52,13 +54,83 @@ function App() {
   
   // For overlay scaling
   const imgRef = useRef<HTMLImageElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
+  const processFile = (file: File) => {
+    if (file.type.startsWith('image/')) {
       setSelectedImage(file);
       setPreviewUrl(URL.createObjectURL(file));
       setAnalysisResult(null);
+      // Reset file input so the same file can be selected again
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    } else {
+      alert('Please drop an image file');
+    }
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      processFile(event.target.files[0]);
+    }
+  };
+
+  const handleDrag = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setIsDragActive(true);
+    } else if (e.type === 'dragleave') {
+      // Check if we're actually leaving the element
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      if (
+        e.clientX <= rect.left ||
+        e.clientX >= rect.right ||
+        e.clientY <= rect.top ||
+        e.clientY >= rect.bottom
+      ) {
+        setIsDragActive(false);
+      }
+    }
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      processFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleDragPreview = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === 'dragenter' || e.type === 'dragover') {
+      setIsDragActivePreview(true);
+    } else if (e.type === 'dragleave') {
+      // Check if we're actually leaving the element
+      const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+      if (
+        e.clientX <= rect.left ||
+        e.clientX >= rect.right ||
+        e.clientY <= rect.top ||
+        e.clientY >= rect.bottom
+      ) {
+        setIsDragActivePreview(false);
+      }
+    }
+  };
+
+  const handleDropPreview = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragActivePreview(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      processFile(e.dataTransfer.files[0]);
     }
   };
 
@@ -131,18 +203,51 @@ function App() {
              {/* Content Container */}
              <div className="p-6 flex flex-col items-center">
                  {!previewUrl ? (
-                    <label className={`w-full aspect-[4/5] rounded-[2rem] border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-colors ${
-                        isDarkMode ? 'border-gray-700 hover:border-[#0381fe] bg-[#252525]' : 'border-gray-200 hover:border-[#0381fe] bg-gray-50'
-                    }`}>
-                        <div className={`p-6 rounded-3xl mb-4 ${isDarkMode ? 'bg-[#0381fe]/20 text-[#0381fe]' : 'bg-blue-50 text-[#0381fe]'}`}>
+                    <label 
+                      onDragEnter={handleDrag}
+                      onDragLeave={handleDrag}
+                      onDragOver={handleDrag}
+                      onDrop={handleDrop}
+                      className={`w-full aspect-[4/5] rounded-[2rem] border-2 border-dashed flex flex-col items-center justify-center cursor-pointer transition-all duration-200 ${
+                        isDragActive
+                        ? isDarkMode 
+                          ? 'border-[#0381fe] bg-[#0381fe]/10 scale-105' 
+                          : 'border-[#0381fe] bg-blue-50 scale-105'
+                        : isDarkMode 
+                          ? 'border-gray-700 hover:border-[#0381fe] bg-[#252525]' 
+                          : 'border-gray-200 hover:border-[#0381fe] bg-gray-50'
+                    }`}
+                    >
+                        <div className={`p-6 rounded-3xl mb-4 transition-all duration-200 ${
+                          isDragActive
+                          ? isDarkMode
+                            ? 'bg-[#0381fe]/30 text-[#0381fe] scale-110'
+                            : 'bg-blue-100 text-[#0381fe] scale-110'
+                          : isDarkMode 
+                            ? 'bg-[#0381fe]/20 text-[#0381fe]' 
+                            : 'bg-blue-50 text-[#0381fe]'
+                        }`}>
                             <Upload className="w-8 h-8" />
                         </div>
-                        <span className="text-lg font-medium mb-1">Upload Photo</span>
-                        <span className="text-sm text-gray-400">Tap to select from storage</span>
-                        <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+                        <span className={`text-lg font-medium mb-1 transition-colors ${isDragActive ? 'text-[#0381fe]' : ''}`}>
+                          {isDragActive ? 'Drop your image here!' : 'Upload Photo'}
+                        </span>
+                        <span className="text-sm text-gray-400">Tap to select or drag and drop</span>
+                        <input ref={fileInputRef} type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
                     </label>
                  ) : (
-                    <div className="relative w-full rounded-[2rem] overflow-hidden shadow-sm">
+                    <>
+                    <div 
+                      className="relative w-full rounded-[2rem] overflow-hidden shadow-sm transition-all duration-200"
+                      onDragEnter={handleDragPreview}
+                      onDragLeave={handleDragPreview}
+                      onDragOver={handleDragPreview}
+                      onDrop={handleDropPreview}
+                      style={{
+                        backgroundColor: isDragActivePreview ? 'rgba(3, 129, 254, 0.1)' : 'transparent',
+                        transform: isDragActivePreview ? 'scale(1.02)' : 'scale(1)',
+                      }}
+                    >
                         <img 
                             src={previewUrl} 
                             ref={imgRef}
@@ -175,12 +280,13 @@ function App() {
                             );
                          })}
 
-                         {/* Change Image Button */}
-                         <label className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-md text-white px-4 py-2 rounded-full text-sm font-medium cursor-pointer active:scale-95 transition-transform">
-                             Change
+                         {/* Upload Button Icon - Grey at bottom */}
+                         <label className="absolute bottom-4 right-4 bg-gray-400/40 backdrop-blur-md text-white rounded-full w-12 h-12 flex items-center justify-center cursor-pointer active:scale-90 transition-all duration-200 hover:bg-gray-400/60">
+                             <Upload className="w-5 h-5" />
                              <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
                          </label>
                     </div>
+                    </>
                  )}
 
                 {/* Detected Items List - Moved Inside Card */}

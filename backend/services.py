@@ -1,15 +1,16 @@
 import os
 import requests
 from typing import List, Dict
+from pathlib import Path
 from ultralytics import YOLO
 from dotenv import load_dotenv
 
-
-load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
+# Load environment variables from .env file
+env_path = Path(__file__).parent / ".env"
+load_dotenv(env_path)
 
 SPOONACULAR_API_KEY = os.getenv("SPOONACULAR_API_KEY")
-if not SPOONACULAR_API_KEY:
-    print("Warning: SPOONACULAR_API_KEY not found in environment variables.")
+ROBOFLOW_API_KEY = os.getenv("ROBOFLOW_API_KEY")
 
 class YoloService:
     def __init__(self):
@@ -96,6 +97,9 @@ class SpoonacularService:
         self.api_key = SPOONACULAR_API_KEY
 
     def find_recipes_by_ingredients(self, ingredients: List[str], number: int = 5) -> List[Dict]:
+        if not self.api_key:
+            return []
+        
         if not ingredients:
             return []
             
@@ -107,7 +111,7 @@ class SpoonacularService:
             "ingredients": ingredients_str,
             "number": number,
             "ignorePantry": True,
-            "ranking": 1 # maximize used ingredients
+            "ranking": 1
         }
         
         try:
@@ -132,22 +136,19 @@ class SpoonacularService:
             bulk_response.raise_for_status()
             details = bulk_response.json()
             
-            # Map details by ID for easy lookup (though bulk usually returns in order, good to be safe)
             details_map = {d['id']: d for d in details}
             
             final_recipes = []
             for r in initial_recipes:
                 d = details_map.get(r['id'])
                 if d:
-                    # Merge info. details has sourceUrl, instructions, etc.
-                    # We keep the used/missed counts from the first call as bulk might not have them relative to my query
                     r['sourceUrl'] = d.get('sourceUrl')
                     r['readyInMinutes'] = d.get('readyInMinutes')
                     r['summary'] = d.get('summary')
                     final_recipes.append(r)
             
             return final_recipes
-
-        except requests.RequestException as e:
-            print(f"Error calling Spoonacular API: {e}")
+        
+        except Exception as e:
+            print(f"Error fetching recipes: {str(e)}")
             return []
