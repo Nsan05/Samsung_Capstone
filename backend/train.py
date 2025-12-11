@@ -153,14 +153,35 @@ def train_model_local():
     # Train the model
     print("🔥 Starting training...")
     print("   This may take several minutes on CPU...")
+# Inside your train_model_local() function, replace the model.train() call
     results = model.train(
         data=dataset_path,
-        epochs=50,
-        imgsz=640,
-        patience=10,  # Early stopping
-        device="cpu",  # CPU training
+        epochs=150,           # Increased from 50
+        imgsz=1280,           # Increased from 640 for better small object detection
+        batch=16,             # Set explicitly - use largest value your GPU VRAM allows (e.g., -1 for auto on GPU)
+        patience=30,          # Increased from 10
+        device="cpu",           # Use GPU ("0" for first GPU, "cpu" for CPU)
+        # --- Enable and configure augmentations ---
+        augment=True,         # Enable built-in augmentations
+        hsv_h=0.015,         # Randomly adjust image hue
+        hsv_s=0.7,           # Randomly adjust image saturation
+        hsv_v=0.4,           # Randomly adjust image value (brightness)
+        degrees=10.0,        # Random image rotation (+/- degrees)
+        translate=0.1,       # Random image translation (+/- fraction)
+        scale=0.5,           # Random image scaling (+/- gain)
+        shear=2.0,           # Random image shear (+/- degrees)
+        # --- Tuning other hyperparameters ---
+        lr0=0.01,            # Initial learning rate (SGD)
+        lrf=0.01,            # Final learning rate factor = lr0 * lrf
+        momentum=0.937,      # SGD momentum
+        weight_decay=0.0005, # Optimizer weight decay
+        warmup_epochs=3.0,   # Learning rate warmup epochs
+        warmup_momentum=0.8, # Warmup initial momentum
+        box=7.5,             # Box loss gain
+        cls=0.5,             # Class loss gain
+        dfl=1.5,             # Distribution Focal Loss gain
         project="runs/detect",
-        name="train",
+        name="train_enhanced",
         verbose=True
     )
     
