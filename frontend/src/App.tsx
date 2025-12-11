@@ -279,15 +279,20 @@ function App() {
                                 </motion.div>
                             );
                          })}
-
-                         {/* Upload Button Icon - Grey at bottom */}
-                         <label className="absolute bottom-4 right-4 bg-gray-400/40 backdrop-blur-md text-white rounded-full w-12 h-12 flex items-center justify-center cursor-pointer active:scale-90 transition-all duration-200 hover:bg-gray-400/60">
-                             <Upload className="w-5 h-5" />
-                             <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
-                         </label>
                     </div>
+
+                    {/* Upload Button - Below the image */}
+                    <label className={`mt-4 w-full py-4 rounded-[2rem] flex items-center justify-center gap-3 cursor-pointer active:scale-95 transition-all duration-200 font-medium ${
+                        isDarkMode 
+                        ? 'bg-[#252525] text-white hover:bg-[#2c2c2c]' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    }`}>
+                        <Upload className="w-5 h-5" />
+                        <span>Change Image</span>
+                        <input type="file" className="hidden" onChange={handleFileChange} accept="image/*" />
+                    </label>
                     </>
-                 )}
+                  )}
 
                 {/* Detected Items List - Moved Inside Card */}
                 <AnimatePresence>
