@@ -1,7 +1,4 @@
-<<<<<<< HEAD
-=======
 from roboflow import Roboflow
->>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
 from ultralytics import YOLO
 from dotenv import load_dotenv
 import os
@@ -128,8 +125,8 @@ def merge_datasets(dataset_paths, output_dir="merged_dataset"):
     print(f"Merged dataset created at {output_path}")
     return str(output_path / "data.yaml")
 
-def train_model():
-<<<<<<< HEAD
+
+def train_model_local():
     """Train YOLO model on local Food-in-Fridge dataset."""
     print("\n" + "=" * 60)
     print("🎯 YOLO TRAINING - LOCAL DATASET")
@@ -173,7 +170,10 @@ def train_model():
     print(f"🏆 Best model: {results.save_dir}/weights/best.pt")
     print("=" * 60)
     print("\n✨ The app will automatically load this trained model on next restart!")
-=======
+
+
+def train_model_roboflow():
+    """Train YOLO model using Roboflow datasets."""
     api_key = os.getenv("ROBOFLOW_API_KEY")
     if not api_key:
         raise ValueError("ROBOFLOW_API_KEY not found in .env file")
@@ -200,7 +200,18 @@ def train_model():
     
     print("Training complete.")
     print(f"Best model weights should be saved in: {results.save_dir}/weights/best.pt")
->>>>>>> 5d49f6c6b3898b81e67e64cb55c32255fadebba0
+
+
+def train_model():
+    """Main training function - tries local first, then Roboflow."""
+    # Try local dataset first
+    if os.path.exists("Food-in-Fridge-1/data.yaml"):
+        print("Found local dataset, using local training...")
+        train_model_local()
+    else:
+        print("No local dataset found, using Roboflow...")
+        train_model_roboflow()
+
 
 if __name__ == "__main__":
     train_model()
