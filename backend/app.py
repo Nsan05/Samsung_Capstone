@@ -16,12 +16,6 @@ from services import YoloService, SpoonacularService
 app = FastAPI(title="VisionChef API")
 
 
-import os
-
-print("🔍 Spoonacular Key:", os.getenv("SPOONACULAR_API_KEY"))
-print("🔍 Roboflow Key:", os.getenv("ROBOFLOW_API_KEY"))
-
-
 # Allow CORS for local frontend execution
 app.add_middleware(
     CORSMiddleware,

@@ -149,6 +149,16 @@ class SpoonacularService:
             
             return final_recipes
         
+        except requests.exceptions.HTTPError as e:
+            # HTTP errors from Spoonacular (e.g., 401 Unauthorized, 402 Quota, etc.)
+            resp = e.response
+            try:
+                body = resp.text
+            except Exception:
+                body = '<unreadable body>'
+            print(f"Spoonacular HTTPError: status={resp.status_code}, body={body}")
+            return []
         except Exception as e:
+            # Generic fallback
             print(f"Error fetching recipes: {str(e)}")
             return []
