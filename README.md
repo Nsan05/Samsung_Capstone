@@ -68,7 +68,19 @@ SPOONACULAR_API_KEY=your_spoonacular_key_here
 ROBOFLOW_API_KEY=your_roboflow_key_here
 ```
 
-### 3. Frontend Setup
+### 3. Model Weights (Crucial Step)
+
+For the application to detect ingredients accurately, you must download the pre-trained YOLOv8 weights. **These weights were obtained by custom training on both the "Food in Fridge" and "Food Ingredients" datasets for higher epochs to ensure optimal performance.**
+
+1.  **Download the weights** from this Google Drive link: [Download Weights](https://drive.google.com/drive/folders/1q0_VGkgZvJEpL7JDhS9qhWo9VqnWzkbN?usp=sharing)
+2.  **Create the directory structure** inside the `backend` folder if it doesn't exist:
+    ```
+    backend/runs/detect/train/weights/
+    ```
+3.  **Place the downloaded files** (e.g., `best.pt`, `last.pt`) into this folder.
+    - Final path should look like: `.../backend/runs/detect/train/weights/best.pt`
+
+### 4. Frontend Setup
 
 Navigate to the frontend directory and install dependencies.
 
