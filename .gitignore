@@ -50,3 +50,6 @@ yarn-error.log*
 *.swp
 
 backend/FOOD-INGREDIENTS-detection-1/
+PRESENTATION_GUIDE.md
+PROJECT_REPORT.md
+Test Images/
