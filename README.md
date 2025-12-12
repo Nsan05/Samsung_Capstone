@@ -1,10 +1,10 @@
-VisionChef: Smart Fridge Assistant
+# VisionChef: Smart Fridge Assistant
 <div align="center"> <img src="./images/main.jpg" alt="VisionChef Main Interface" width="800"/> <p><em>Main application interface showing detected ingredients and recipe suggestions</em></p> </div>
 VisionChef is an intelligent web application that helps you reduce food waste and cook creative meals. It uses AI object detection (YOLOv8) to identify ingredients in your fridge from a photo and suggests recipes based on what you have (via Spoonacular API).
 
 The UI is designed with a premium Samsung One UI aesthetic, featuring clean lines, large squircles, and intuitive interactions.
 
-✨ Features
+## ✨ Features
 🤖 AI Ingredient Detection: Automatically identifies food items in uploaded images using a fine-tuned YOLOv8 model.
 
 🔍 Smart Recipe Search: Suggests recipes based on detected ingredients, prioritizing what you already have.
@@ -20,53 +20,42 @@ The UI is designed with a premium Samsung One UI aesthetic, featuring clean line
 <div align="center"> <img src="./images/main.jpg" alt="Recipe List View" width="600"/> <p><em>Browse recipes with ingredient detection results and cooking metrics</em></p> </div>
 📋 Detailed Recipe View
 <div align="center"> <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;"> <div> <img src="./images/description.jpg" alt="Recipe Description" width="300"/> <p><em>Recipe details with nutrition information</em></p> </div> <div> <img src="./images/descriptionItem.jpg" alt="Recipe Instructions" width="300"/> <p><em>Recipe instructions and required ingredients</em></p> </div> </div> </div>
-📊 Key Screens
-Feature	Screenshot	Description
-Main Dashboard	<img src="./images/main.jpg" width="250">	Shows detected ingredients and recipe suggestions
-Recipe Details	<img src="./images/description.jpg" width="250">	Displays nutrition info, cooking time, and ratings
-Ingredients List	<img src="./images/descriptionItem.jpg" width="250">	Shows required ingredients with checkboxes
-🔄 How It Works
-graph TD
-    A[📸 Upload Fridge Photo] --> B[🤖 AI Detection<br/>YOLOv8]
-    B --> C[📋 Extract Ingredients]
-    C --> D[🔍 Query Spoonacular API]
-    D --> E[🍳 Display Recipes]
-    E --> F[📱 Samsung One UI Interface]
-    F --> G[✅ User Selects Recipe]
-    G --> H[👨‍🍳 Cook & Enjoy!]
-📋 Prerequisites
+
+VisionChef is an intelligent web application that helps you reduce food waste and cook creative meals. It uses AI object detection (YOLOv8) to identify ingredients in your fridge from a photo and suggests recipes based on what you have (via Spoonacular API).
+
+## Prerequisites
+
 Before running the project, ensure you have the following installed:
 
-Requirement	Version	Purpose
-Python	3.8+	Backend API & AI model
-Node.js	16+	Frontend React application
-npm	Latest	Package management
-Git	Latest	Version control
-🔑 API Keys
+1.  **Python 3.8+** (for the backend)
+2.  **Node.js 16+** & **npm** (for the frontend)
+3.  **Git**
+
+## API Keys
+
 You will need API keys for the following services:
 
-Service	Purpose	Get Key
-Spoonacular API	Fetching recipes	Get Key
-Roboflow API	Training datasets (optional)	Get Key
-🚀 Installation
-1. Clone the Repository
-bash
+1.  **Spoonacular API**: For fetching recipes. [Get Key](https://spoonacular.com/food-api)
+2.  **Roboflow API**: For downloading training datasets (only needed if training/evaluating). [Get Key](https://roboflow.com/)
+
+## Installation
+
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/Start-Catch-Up/VisionChef.git
 cd VisionChef
-2. Set Up Images Directory
-Ensure your images are in the images folder:
+```
 
-bash
-# Verify images are in the correct location
-ls images/
-# Should show: main.jpg, description.jpg, descriptionItem.jpg
-3. Backend Setup
-bash
+### 2. Backend Setup
+
+Navigate to the backend directory and set up the Python environment.
+
+```bash
 cd backend
 
-# Create and activate virtual environment
+# Create a virtual environment (optional but recommended)
 python -m venv venv
-
 # Windows
 .\venv\Scripts\activate
 # Mac/Linux
@@ -74,129 +63,98 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
-Configure environment variables:
+```
 
-bash
-# Copy example environment file
+**Configuration:**
+Create a `.env` file in the `backend` directory (or rename `.env.example`):
+
+```bash
 cp .env.example .env
-Edit .env file:
+```
 
-env
-SPOONACULAR_API_KEY=your_actual_key_here
-ROBOFLOW_API_KEY=your_actual_key_here
-4. Model Weights (Crucial Step)
-<div align="center"> <img src="./images/description.jpg" width="400" alt="AI Model in Action"/> <p><em>AI-powered ingredient detection requires trained weights</em></p> </div>
-Download weights from: Google Drive
+Edit `.env` and add your keys:
 
-Create directory:
+```env
+SPOONACULAR_API_KEY=your_spoonacular_key_here
+ROBOFLOW_API_KEY=your_roboflow_key_here
+```
 
-bash
-mkdir -p backend/runs/detect/train/weights
-Place files:
+### 3. Model Weights (Crucial Step)
 
-text
-backend/runs/detect/train/weights/
-├── best.pt    # Primary model weights
-└── last.pt    # Backup weights
-5. Frontend Setup
-bash
+For the application to detect ingredients accurately, you must download the pre-trained YOLOv8 weights. **These weights were obtained by custom training on both the "Food in Fridge" and "Food Ingredients" datasets for higher epochs to ensure optimal performance.**
+
+1.  **Download the weights** from this Google Drive link: [Download Weights](https://drive.google.com/drive/folders/1q0_VGkgZvJEpL7JDhS9qhWo9VqnWzkbN?usp=sharing)
+2.  **Create the directory structure** inside the `backend` folder if it doesn't exist:
+    ```
+    backend/runs/detect/train/weights/
+    ```
+3.  **Place the downloaded files** (e.g., `best.pt`, `last.pt`) into this folder.
+    - Final path should look like: `.../backend/runs/detect/train/weights/best.pt`
+
+### 4. Frontend Setup
+
+Navigate to the frontend directory and install dependencies.
+
+```bash
 cd ../frontend
 npm install
-🖥️ Running the Application
-Run both servers in separate terminals:
+```
 
-Terminal 1 - Backend
-bash
-cd backend
+## Running the Application
+
+You need to run both the backend and frontend servers simultaneously.
+
+### Start Backend
+
+In the `backend` directory:
+
+```bash
 python app.py
-# Server: http://localhost:8000
-Terminal 2 - Frontend
-bash
-cd frontend
-npm run dev
-# Server: http://localhost:5173
-<div align="center"> <img src="./images/main.jpg" width="500" alt="Running Application"/> <p><em>Application running with both backend and frontend servers</em></p> </div>
-🧪 Model Training (Optional)
-To train your own model:
+```
 
-bash
+_The backend will start at `http://localhost:8000`_
+
+### Start Frontend
+
+In the `frontend` directory:
+
+```bash
+npm run dev
+```
+
+_The frontend will start at `http://localhost:5173`_
+
+## Model Training (Optional)
+
+If you want to fine-tune the object detection model:
+
+```bash
 cd backend
 python train.py
-This script:
+```
 
-📥 Downloads datasets from Roboflow
+This script will:
 
-🔄 Merges "Food in Fridge" and "Food Ingredients" datasets
+1.  Download "Food in Fridge" and "Food Ingredients" datasets from Roboflow.
+2.  Merge them into a unified dataset.
+3.  Train a YOLOv8 model (results saved to `runs/detect/train/`).
 
-🏋️‍♂️ Trains YOLOv8 model
+## Project Structure
 
-💾 Saves results to runs/detect/train/
-
-📁 Project Structure
-text
+```
 VisionChef/
-├── 📁 images/                    # Application screenshots
-│   ├── main.jpg                 # Main interface
-│   ├── description.jpg          # Recipe details
-│   └── descriptionItem.jpg      # Ingredients list
-├── 📁 backend/
-│   ├── app.py                   # FastAPI application
-│   ├── train.py                 # Model training
-│   ├── evaluate.py              # Model evaluation
-│   ├── services.py              # YOLO & Spoonacular logic
-│   ├── requirements.txt         # Python dependencies
-│   └── 📁 runs/                 # Trained model weights
-├── 📁 frontend/
-│   ├── 📁 src/
-│   │   ├── App.tsx              # React application
-│   │   └── index.css            # Tailwind styles
-│   ├── tailwind.config.js       # Tailwind config
-│   └── package.json             # Node.js dependencies
-└── README.md                    # This file
-🎯 User Flow
-<div align="center"> <img src="./images/main.jpg" alt="User Flow Diagram" width="400" style="border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 2px solid #4CAF50;"/> </div>
-📸 Capture - Take a photo of your fridge
-
-🤖 Detect - AI identifies ingredients
-
-🍳 Browse - View matching recipes
-
-👨‍🍳 Cook - Follow instructions with confidence
-
-🌱 Reduce Waste - Use what you have efficiently
-
-📝 Example Usage
-python
-# Example of how VisionChef processes images
-from services import detect_ingredients, get_recipes
-
-# 1. User uploads image
-image = "fridge_photo.jpg"
-
-# 2. AI detects ingredients
-ingredients = detect_ingredients(image)
-# Returns: ["tomatoes", "onion", "eggs", "bacon"]
-
-# 3. Find matching recipes
-recipes = get_recipes(ingredients)
-# Returns recipes that use detected items
-🛠️ Troubleshooting
-Issue	Solution
-Images not loading	Ensure images are in ./images/ folder
-Model weights missing	Download from Google Drive link above
-API errors	Check .env file for correct keys
-Port conflicts	Change ports in app.py (backend) or vite.config.js (frontend)
-📄 License
-MIT License - see LICENSE file for details.
-
-<div align="center">
-🚀 Ready to Reduce Food Waste?
-bash
-# Start your culinary AI journey
-git clone https://github.com/Start-Catch-Up/VisionChef.git
-cd VisionChef
-# Follow installation steps above
-Made with ❤️ by the VisionChef Team
-Smart cooking for a sustainable future
-
-<div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;"> <img src="./images/descriptionItem.jpg" width="150" alt="Ingredients"> <img src="./images/description.jpg" width="150" alt="Recipe"> <img src="./images/main.jpg" width="150" alt="Dashboard"> </div></div>
+├── backend/
+│   ├── app.py              # FastAPI application
+│   ├── train.py            # Model training script
+│   ├── evaluate.py         # Model evaluation script
+│   ├── services.py         # Logic for YOLO and Spoonacular
+│   ├── requirements.txt    # Python dependencies
+│   └── runs/               # Trained model weights
+├── frontend/
+│   ├── src/
+│   │   ├── App.tsx         # Main React application
+│   │   └── index.css       # Tailwind CSS styles
+│   ├── tailwind.config.js  # Tailwind configuration
+│   └── package.json        # Node.js dependencies
+└── README.md
+```
